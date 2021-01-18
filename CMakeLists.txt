@@ -13,12 +13,27 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
 
+
+# find_package(Poco COMPONENTS Net StreamCopier Path URI Exception REQUIRED)
+# add_library(Poco PUBLIC
+#     Poco::Net
+#     Poco::StreamCopier
+#     Poco::Path
+#     Poco::URI
+#     Poco::Exception
+# )
 find_package(OmnetPP 5.4 MODULE REQUIRED)
 include(AddOppRun)
 include(AddOppTarget)
 include(CheckGitSubmodule)
 include(GenerateOppMessage)
 include(GNUInstallDirs)
+
+#add conan
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
+# include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+# conan_basic_setup()
 
 # running simulations with opp_run requires shared libraries
 set(BUILD_SHARED_LIBS ON CACHE INTERNAL "Cached for propagation to sub-projects with older CMake versions")
@@ -81,7 +96,7 @@ endif()
 
 option(WITH_ENVMOD "Build Artery with environment model feature" ON)
 option(WITH_STORYBOARD "Build Artery with storyboard feature" ON)
-option(WITH_TRANSFUSION "Build Artery with transfusion feature" OFF)
+option(WITH_TRANSFUSION "Build Artery with transfusion feature" ON)
 option(WITH_TESTBED "Build Artery with testbed feature" OFF)
 
 option(WITH_OTS "Build Artery with support for OpenTrafficSim" OFF)

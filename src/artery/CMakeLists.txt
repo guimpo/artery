@@ -54,6 +54,7 @@ add_library(core SHARED
     utility/FilterRules.cc
     utility/Geometry.cc
 )
+
 target_link_libraries(artery INTERFACE core)
 add_library(Artery::Core ALIAS core)
 
@@ -66,6 +67,9 @@ set_target_properties(core PROPERTIES
 target_include_directories(core PUBLIC ${PROJECT_SOURCE_DIR}/src)
 target_include_directories(core PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(core PUBLIC ${Boost_LIBRARIES})
+target_link_libraries(core PUBLIC ${PROJECT_SOURCE_DIR}/extern/libPocoNet.a)
+target_link_libraries(core PUBLIC ${PROJECT_SOURCE_DIR}/extern/libPocoFoundation.a)
+
 target_link_libraries(core PUBLIC OmnetPP::envir)
 target_link_libraries(core PUBLIC traci)
 target_link_libraries(core PUBLIC Vanetza::vanetza)

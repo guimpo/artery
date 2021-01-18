@@ -1,0 +1,12 @@
+ /home/paulo/simulators/omnetpp-5.5.1/bin/opp_run_dbg -n /home/paulo/simulators/artery_conan/src/artery:/home/paulo/simulators/artery_conan/src/traci:/home/paulo/simulators/artery_conan/extern/veins/examples/veins:/home/paulo/simulators/artery_conan/extern/veins/src/veins:/home/paulo/simulators/artery_conan/extern/inet/src:/home/paulo/simulators/artery_conan/extern/inet/examples:/home/paulo/simulators/artery_conan/extern/inet/tutorials:/home/paulo/simulators/artery_conan/extern/inet/showcases -l /home/paulo/simulators/artery_conan/debug/lib/libartery_envmod.so -l /home/paulo/simulators/artery_conan/debug/lib/libartery_transfusion.so -l /home/paulo/simulators/artery_conan/debug/lib/libartery_storyboard.so -l /home/paulo/simulators/artery_conan/debug/lib/libINET.so -l /home/paulo/simulators/artery_conan/debug/lib/libveins.so -l /home/paulo/simulators/artery_conan/debug/lib/libtraci.so -l /home/paulo/simulators/artery_conan/debug/lib/libartery_core.so omnetpp.ini
+
+/home/paulo/simulators/omnetpp-5.5.1/bin/opp_run_dbg -n 
+/home/paulo/simulators/artery_conan/src/artery:/home/paulo/simulators/artery_conan/src/traci:/home/paulo/simulators/artery_conan/extern/veins/examples/veins:/home/paulo/simulators/artery_conan/extern/veins/src/veins:/home/paulo/simulators/artery_conan/extern/inet/src:/home/paulo/simulators/artery_conan/extern/inet/examples:/home/paulo/simulators/artery_conan/extern/inet/tutorials:/home/paulo/simulators/artery_conan/extern/inet/showcases 
+-l /home/paulo/simulators/artery_conan/debug/lib/libartery_envmod.so 
+-l /home/paulo/simulators/artery_conan/debug/lib/libartery_transfusion.so 
+-l /home/paulo/simulators/artery_conan/debug/lib/libartery_storyboard.so 
+-l /home/paulo/simulators/artery_conan/debug/lib/libINET.so
+-l /home/paulo/simulators/artery_conan/debug/lib/libveins.so 
+-l /home/paulo/simulators/artery_conan/debug/lib/libtraci.so
+-l /home/paulo/simulators/artery_conan/debug/lib/libartery_core.so
+omnetpp.ini

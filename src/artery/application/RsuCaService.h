@@ -29,7 +29,8 @@ class RsuCaService : public ItsG5BaseService
         void initialize() override;
         void indicate(const vanetza::btp::DataIndication&, std::unique_ptr<vanetza::UpPacket>) override;
         void trigger() override;
-
+        std::string ofPostRequest(std::string url, std::string body, std::map<std::string, std::string> headers);
+        void setup();
         struct ProtectedCommunicationZone
         {
             boost::optional<ProtectedZoneID_t> id;

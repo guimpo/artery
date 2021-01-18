@@ -17,6 +17,16 @@
 #include <vanetza/btp/ports.hpp>
 #include <cmath>
 
+#include <iostream>
+#include <sstream>
+#include <Poco/Net/HTTPClientSession.h>
+#include <Poco/Net/HTTPRequest.h>
+#include <Poco/Net/HTTPResponse.h>
+#include <Poco/StreamCopier.h>
+#include <Poco/Path.h>
+#include <Poco/URI.h>
+#include <Poco/Exception.h>
+
 namespace artery
 {
 
@@ -26,6 +36,81 @@ static const simsignal_t scSignalCamReceived = cComponent::registerSignal("CamRe
 static const simsignal_t scSignalCamSent = cComponent::registerSignal("CamSent");
 
 Define_Module(RsuCaService)
+
+
+std::string RsuCaService::ofPostRequest(std::string url, std::string body, std::map<std::string, std::string> headers)
+{
+    try
+    {
+        using std::string;
+        using std::map;
+        using std::cout;
+        using std::endl;
+        using std::istream;
+        using std::stringstream;
+        // using Poco::Net::HTTPClientSession;
+        // using Poco::URI;
+        // using Poco::Net::HTTPRequest;
+        // using Poco::Net::HTTPMessage;
+        // using Poco::Net::HTTPResponse;
+        // using Poco::StreamCopier;
+        
+        // prepare session
+        Poco::URI uri(url);
+        Poco::Net::HTTPClientSession session(uri.getHost(), uri.getPort());
+        
+        // prepare path
+        string path(uri.getPathAndQuery());
+        if (path.empty()) path = "/";
+        
+        // send request
+        Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_POST, path, Poco::Net::HTTPMessage::HTTP_1_1);
+        req.setContentType("application/json");
+        
+        // Set headers here
+        for(std::map<string,string>::iterator it = headers.begin();
+            it != headers.end(); it++) {
+            req.set(it->first, it->second);
+        }
+        
+        // Set the request body
+        req.setContentLength( body.length() );
+        
+        // sends request, returns open stream
+        std::ostream& os = session.sendRequest(req);
+        os << body;  // sends the body
+        //req.write(std::cout); // print out request
+        
+        // get response
+        Poco::Net::HTTPResponse res;
+        cout << res.getStatus() << " " << res.getReason() << endl;
+        
+        istream &is = session.receiveResponse(res);
+        stringstream ss;
+        Poco::StreamCopier::copyStream(is, ss);
+        
+        return ss.str();
+    }
+    catch (Poco::Exception &ex)
+    {
+        using std::cerr;
+        cerr << ex.displayText() << endl;
+        return "";
+    }
+}
+
+//--------------------------------------------------------------
+void RsuCaService::setup()
+{    
+    using std::string;
+    using std::map;
+    using std::cout;
+    cout << "custom http request works";
+    string body = "{\"oi\": \"hello\"}";
+    map<string,string> headers;
+    headers["Test-Header"] = "Rainbow Lollipop";
+    cout << ofPostRequest("http://localhost:3000/post", body, headers);
+}
 
 void RsuCaService::initialize()
 {
@@ -84,6 +169,7 @@ auto RsuCaService::parseProtectedCommunicationZones(cXMLElement* zones_cfg) -> s
 void RsuCaService::trigger()
 {
     Enter_Method("trigger");
+    setup();
     if (simTime() - mLastCamTimestamp >= mGenerationInterval) {
         sendCam();
     }
@@ -92,7 +178,6 @@ void RsuCaService::trigger()
 void RsuCaService::indicate(const vanetza::btp::DataIndication& ind, std::unique_ptr<vanetza::UpPacket> packet)
 {
     Enter_Method("indicate");
-
     Asn1PacketVisitor<vanetza::asn1::Cam> visitor;
     const vanetza::asn1::Cam* cam = boost::apply_visitor(visitor, *packet);
     if (cam && cam->validate()) {
